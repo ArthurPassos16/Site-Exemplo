@@ -1,13 +1,14 @@
 <?php 
     require_once('header_meta.php');
     require_once('header.php');
+    require_once('conexao.php');
 ?>
     <!--CARROSSEL-->
     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <b'utton type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active text-center">
@@ -47,43 +48,45 @@
     </div>
     <!--FIM DO SOBRE-->
 
-    <!--INTEGRANTES-->
+    <?php
+            mysqli_select_db($mysqli, $bd) or die("Could not select database");
+
+            $query = "SELECT * FROM integrantes";
+            $result = mysqli_query($mysqli, $query);
+            $num_results = mysqli_num_rows($result);
+        ?>
+
+  <!--INTEGRANTES-->
     <div id="integrantes">
         <div class="container mt-3">
             <div class="row">
                 <div class="text-center mb-3">
                     <h1>INTEGRANTES</h1>
                 </div>
+
+                <?php 
+
+                    if($num_results > 0) {
+                        for($i=0; $i<$num_results; $i++) {
+                        $row = mysqli_fetch_array($result);
+                    ?>
                 <div class="col-sm-4">
-                    <div class="card"">
-                        <img class="card-img-top px-3 py-3" src="assets/user.png" alt="Imagem de capa do card">
+                    <div class="card">
+                        <img class="card-img-top px-3 py-3" src="./assets/integrantes/<?php print_r(utf8_encode($row['Foto'])) ?>" alt="Imagem de capa do card">
                         <div class="card-body text-center">
-                            <h5 class="card-title">Título do card</h5>
-                            <p class="card-text">Um exemplo de texto rápido para construir o título do card e fazer preencher o conteúdo do card.</p>
+                            <h5 class="card-title"><?php print_r(utf8_encode($row['Titulo'])) ?></h5>
+                            <p class="card-text"><?php print_r(utf8_encode($row['Texto'])) ?></p>
                             <a href="#integrantes" class="btn button-primary btn-outline-primary button">Visitar</a>
                         </div>
                     </div>    
                 </div>
-                <div class="col-sm-4">
-                    <div class="card"">
-                        <img class="card-img-top px-3 py-3" src="assets/user.png" alt="Imagem de capa do card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Título do card</h5>
-                            <p class="card-text">Um exemplo de texto rápido para construir o título do card e fazer preencher o conteúdo do card.</p>
-                            <a href="#integrantes" class="btn button-primary btn-outline-primary button">Visitar</a>
-                        </div>
-                    </div>    
-                </div>
-                <div class="col-sm-4">
-                    <div class="card"">
-                        <img class="card-img-top px-3 py-3" src="assets/user.png" alt="Imagem de capa do card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Título do card</h5>
-                            <p class="card-text">Um exemplo de texto rápido para construir o título do card e fazer preencher o conteúdo do card.</p>
-                            <a href="#integrantes" class="btn button-primary btn-outline-primary button">Visitar</a>
-                        </div>
-                    </div>    
-                </div>
+
+                <?php 
+                    }
+                }
+                ?>
+                
+
             </div>
         </div>
     </div>
